@@ -1,0 +1,53 @@
+version: "3.1"
+services:
+  app:
+    image: cs_chat_app 
+    container_name: cs_chat_app_php8_0
+    build: 
+      context: .
+      dockerfile: .
+    restart: "no"
+    ports:
+      - 80:80
+      - 8000:8000
+    volumes:
+      - ./:/var/www/html
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - cs_chat_app
+
+    command: "php artisan serve --host=0.0.0.0 --port=8000"
+
+   
+
+  db:
+    image: mysql:latest
+    container_name: mysql_db_cs_chat_app
+    restart: "no"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+    volumes:
+      - db_data:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql
+    networks:
+      - cs_chat_app
+   
+  
+  phpmyadmin:
+    image: phpmyadmin:5.2.0-apache
+    restart: "no"
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - cs_chat_app
+
+
+networks:
+  cs_chat_app:
+    driver: bridge
+
+
+volumes:
+  db_data:
