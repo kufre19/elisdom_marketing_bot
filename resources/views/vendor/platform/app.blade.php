@@ -12,7 +12,7 @@
     </title>
     <meta name="csrf_token" content="{{  csrf_token() }}" id="csrf_token">
     <meta name="auth" content="{{  Auth::check() }}" id="auth">
-    <link rel="stylesheet" type="text/css" href="{{  mix('/css/orchid.css','vendor/orchid') }}">
+    <link rel="stylesheet" type="text/css" href="{{  asset('vendor/orchid/css/orchid.css') }}">
 
     @stack('head')
 
@@ -23,9 +23,9 @@
         <meta name="turbo-cache-control" content="no-cache">
     @endif
 
-    <script src="{{ mix('/js/manifest.js','vendor/orchid') }}" type="text/javascript"></script>
-    <script src="{{ mix('/js/vendor.js','vendor/orchid') }}" type="text/javascript"></script>
-    <script src="{{ mix('/js/orchid.js','vendor/orchid') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/orchid/js/manifest.js','') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/orchid/js/vendor.js','vendor/orchid') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/orchid/js/orchid.js','vendor/orchid') }}" type="text/javascript"></script>
 
     @foreach(Dashboard::getResource('stylesheets') as $stylesheet)
         <link rel="stylesheet" href="{{  $stylesheet }}">

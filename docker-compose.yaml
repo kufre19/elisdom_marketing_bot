@@ -1,8 +1,8 @@
 version: "3.1"
 services:
   app:
-    image: cs_chat_app 
-    container_name: cs_chat_app_php8_0
+    image: elsidom_mkt_bot 
+    container_name: elsdiom_bot
     build: 
       context: .
       dockerfile: .
@@ -14,7 +14,7 @@ services:
       - ./:/var/www/html
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - cs_chat_app
+      - elsidom_mkt_bot
 
     command: "php artisan serve --host=0.0.0.0 --port=8000"
 
@@ -22,15 +22,15 @@ services:
 
   db:
     image: mysql:latest
-    container_name: mysql_db_cs_chat_app
+    container_name: mysql_db_elsdiom_bot
     restart: "no"
     environment:
       MYSQL_ROOT_PASSWORD: admin
     volumes:
-      - db_data:/docker-entrypoint-initdb.d
-      - db_data:/var/lib/mysql
+      - db_data_elsdiom_bot:/docker-entrypoint-initdb.d
+      - db_data_elsdiom_bot:/var/lib/mysql
     networks:
-      - cs_chat_app
+      - elsidom_mkt_bot
    
   
   phpmyadmin:
@@ -41,13 +41,13 @@ services:
     environment:
       - PMA_ARBITRARY=1
     networks:
-      - cs_chat_app
+      - elsidom_mkt_bot
 
 
 networks:
-  cs_chat_app:
+  elsidom_mkt_bot:
     driver: bridge
 
 
 volumes:
-  db_data:
+  db_data_elsdiom_bot:
