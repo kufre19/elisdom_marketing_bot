@@ -32,6 +32,7 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make('Chat App')
                 ->icon('bubble')
                 ->url('chatify')
+                ->permission('platform.systems.users')
                 ->badge(function () {
                     $unreadCount = 0;
                     return $unreadCount;

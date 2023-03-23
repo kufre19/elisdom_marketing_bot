@@ -32,7 +32,7 @@ use Tabuna\Breadcrumbs\Trail;
 */
 
 Route::get('/', function () {
-    return redirect(route("platform.main"));
+    return redirect()->to("admin");
 });
 
 
@@ -49,7 +49,7 @@ Route::get('/', function () {
 
 // Main
 Route::screen('/main', Dashboard::class)
-    ->name('platform.main');
+    ->name('platform.main')->middleware("auth");
 
 // Platform > Profile
 Route::screen('profile', UserProfileScreen::class)
