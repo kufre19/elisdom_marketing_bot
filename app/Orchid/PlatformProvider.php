@@ -32,12 +32,15 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make('Chat App')
                 ->icon('bubble')
                 ->url('chatify')
-                ->permission('platform.systems.users')
+                ->permission('platform.systems.users'),
+                
+                Menu::make('Chat Request')
+                ->icon('earphones-alt')
+                ->route('platform.chat-request')
                 ->badge(function () {
-                    $unreadCount = 0;
-                    return $unreadCount;
+                    $count = session()->get("pending_request_count");
+                    return $count;
                 }),
-
             
             // Menu::make('Basic Elements')
             //     ->title('Form controls')
@@ -65,7 +68,7 @@ class PlatformProvider extends OrchidServiceProvider
 
 
 
-            Menu::make(__('Users'))
+            Menu::make(__('Employees'))
                 ->icon('user')
                 ->route('platform.systems.users')
                 ->permission('platform.systems.users')

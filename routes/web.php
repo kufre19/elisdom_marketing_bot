@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Http\Controllers\ChatRequestController;
 use App\Orchid\Screens\Dashboard;
 use Illuminate\Support\Facades\Route;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
@@ -34,6 +35,16 @@ use Tabuna\Breadcrumbs\Trail;
 Route::get('/', function () {
     return redirect()->to("admin");
 });
+
+/* 
+|------------------------------------------------------------------------
+|CUSTOM URL AND CONTOLLERS HERE
+|------------------------------------------------------------------------
+|
+*/
+Route::post("campaign/send",[NewsLetterController::class,"send_campaign_letter"]);
+Route::get("chat-request", [ChatRequestController::class,"index"])->name("platform.chat-request");
+Route::put('/chat-requests/{id}', [ChatRequestController::class, 'update_chat_request'])->name('update.chat_request');
 
 
 /*
