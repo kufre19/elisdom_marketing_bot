@@ -29,6 +29,10 @@ class PlatformProvider extends OrchidServiceProvider
     public function registerMainMenu(): array
     {
         return [
+             Menu::make('Campaign')
+                ->icon('feed')
+                ->route('platform.main'),
+
             Menu::make('Chat App')
                 ->icon('bubble')
                 ->url('chatify')
