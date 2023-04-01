@@ -21,6 +21,7 @@ use App\Orchid\Screens\User\UserProfileScreen;
 use Tabuna\Breadcrumbs\Trail;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
