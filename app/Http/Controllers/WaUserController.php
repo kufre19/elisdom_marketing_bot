@@ -22,6 +22,13 @@ class WaUserController extends Controller
         return view("platform::WaUsers.index");
     }
 
+    public function list_contact()
+    {
+
+        $customers = WaUser::paginate(10);
+        return view('platform::WaUsers.list', compact('customers'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -101,6 +108,11 @@ class WaUserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $waUser = WaUser::findOrFail($id);
+        $waUser->delete();
+
+        Toast::error('Customer contact deleted!');
+
+        return redirect()->to('wa-users/list');
     }
 }

@@ -5,9 +5,15 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+          
+                <div class="col-md-12  text-md-end">
+                <a href="{{ url('wa-users/list') }}" class="btn btn-primary">{{ __('View Contacts') }}</a>
+                </div>
+             
+            <div class="col-md-12 mt-3">
                 <div class="card">
                     <div class="card-header">{{ __('Add Customer') }}</div>
+                   
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('wa-user.store') }}">

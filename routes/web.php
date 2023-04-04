@@ -48,6 +48,8 @@ Route::post("campaign/send", [NewsLetterController::class, "send_campaign_letter
 Route::get("chat-request", [ChatRequestController::class, "index"])->name("platform.chat-request");
 Route::put('/chat-requests/{id}', [ChatRequestController::class, 'update_chat_request'])->name('update.chat_request');
 Route::resource("wa-user","App\Http\Controllers\WaUserController");
+Route::get("wa-users/list","App\Http\Controllers\WaUserController@list_contact");
+
 
 
 /*
