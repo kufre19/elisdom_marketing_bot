@@ -3,25 +3,27 @@
 namespace App\Traits;
 
 use App\Models\User;
+use HandleLiveChat;
 use Illuminate\Support\Facades\Config;
 
 trait HandleText
 {
-    use HandleButton, SendMessage,CreateActionsSession;
+    use HandleButton, SendMessage,CreateActionsSession,HandleLiveChat;
 
     public $text_intent;
 
     public function text_index()
     {
         $this->find_text_intent();
+        if ($this->text_intent == "live_chat") {
+            return $this->index_live_chat();
+        }
         if ($this->text_intent == "greetings") {
             $this->send_greetings_message($this->userphone);
         }
         if ($this->text_intent == "run_action_steps") {
             $this->continue_session_step();
         }
-        
-
         
     }
 
@@ -34,9 +36,6 @@ trait HandleText
         $model = new User();
     }
 
-    public function determin_text()
-    {
-    }
 
     public function find_text_intent()
     {
@@ -44,6 +43,10 @@ trait HandleText
 
         $greetings = Config::get("text_intentions.greetings");
         $menu = Config::get("text_intentions.menu");
+        if ($this->session_model_collection->live_chat == 1) {
+            $this->text_intent = "live_chat";
+            return true;
+        }
       
         if (in_array($message, $greetings)) {
             $this->text_intent = "greetings";
@@ -56,6 +59,7 @@ trait HandleText
             }
         } else {
             $this->text_intent = "others";
+            return true;
         }
     }
 

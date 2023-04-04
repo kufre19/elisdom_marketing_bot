@@ -7,17 +7,14 @@
                 <div class="card-body">
                     <form action="{{ url('submit-form') }}" method="POST">
                         @csrf
-                        <div class="form-group">
-                            <label for="title">Holiday and it's date</label>
-                            <input type="text" class="form-control" id="title" name="holiday" placeholder="Enter title">
-                        </div>
+                       
                         <div class="form-group">
                             <label for="validity">Validity Date</label>
-                            <input type="text" class="form-control" id="validity" name="validity_date" placeholder="Enter title">
+                            <input type="text" class="form-control" id="validity" name="validity_date" placeholder="Validity Date">
                         </div>
                         <div class="form-group">
                             <label for="validity">Number of Products</label>
-                            <input type="number" class="form-control" id="validity" name="number_of_products" placeholder="Enter title">
+                            <input type="number" class="form-control" id="validity" name="number_of_products" placeholder="Number of Products">
                         </div>
                         <div class="form-group">
                             <label for="description">Products</label>

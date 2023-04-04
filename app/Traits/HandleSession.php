@@ -22,6 +22,8 @@ trait HandleSession
     
     */
 
+    public $session_model_collection;
+
 
 
     public function session_index()
@@ -83,10 +85,12 @@ trait HandleSession
             $model = new Session();
             $fetch = $model->where('whatsapp_id', $this->userphone)->first();
             $this->user_session_data = json_decode($fetch->session_data, true);
+            $this->session_model_collection = $fetch;
         } else {
 
             $fetch = $model->where('whatsapp_id', $this->userphone)->first();
             $this->user_session_data = json_decode($fetch->session_data, true);
+            $this->session_model_collection = $fetch;
         }
     }
 

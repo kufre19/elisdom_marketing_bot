@@ -64,10 +64,10 @@ class PlatformProvider extends OrchidServiceProvider
             //     ->icon('bar-chart')
             //     ->route('platform.example.charts'),
 
-            // Menu::make('Cards')
-            //     ->icon('grid')
-            //     ->route('platform.example.cards')
-            //     ->divider(),
+            Menu::make('Add Contacts')
+                ->icon('user')
+                ->url('wa-user')
+                ->divider(),
 
 
 
