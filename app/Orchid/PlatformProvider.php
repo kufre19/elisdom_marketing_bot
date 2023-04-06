@@ -66,7 +66,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make('Add Contacts')
                 ->icon('user')
-                ->url('wa-user')
+                ->route('wa-user')
                 ->divider(),
 
 

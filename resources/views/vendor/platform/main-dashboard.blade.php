@@ -5,8 +5,18 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ url('submit-form') }}" method="POST">
+                    <form action="{{ url('wa-users/send/campaign') }}" method="POST">
                         @csrf
+
+                        <div class="form-group">
+                            <label for="validity">language</label>
+                            
+                            <select name="language" class="form-control" id="lan">
+
+                                <option value="en_US">English</option>
+                                <option value="sq">Albanian</option>
+                            </select>
+                        </div>
                        
                         <div class="form-group">
                             <label for="validity">Validity Date</label>
@@ -18,7 +28,7 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Products</label>
-                            <textarea class="form-control" id="description" name="products" rows="6" placeholder="Enter Products with their links"></textarea>
+                            <textarea wrap="hard" class="form-control" id="description" name="products" rows="6" placeholder="Enter Products with their links"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Send Campaign</button>
                     </form>

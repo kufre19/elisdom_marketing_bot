@@ -162,6 +162,100 @@ trait MessagesType {
 
     }
 
+    public function make_template_message($parameters,$to="",$template_name="",$language="")
+    {
+        if ($to == "") {
+            $to = $this->userphone;
+        }
+        if ($template_name == "") {
+            $template_name = "campaign";
+        }
+
+        if ($language == "") {
+            $template_name = "en_US";
+        }
+
+        $message = [
+
+            "messaging_product" => "whatsapp",
+            "recipient_type" => "individual",
+            "to" => $to,
+            "type" => "template",
+            "template" => [
+                "name" => $template_name,
+                "language"=> [
+                    "code"=> $language,
+                    "policy"=> "deterministic"
+                ],
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => $parameters,
+
+                    ]
+                ]
+            ]
+
+
+        ];
+
+
+        return json_encode($message);
+    }
+
+    public function make_interactive_template_message($parameters,$to="",$template_name="",$language="")
+    {
+        if ($to == "") {
+            $to = $this->userphone;
+        }
+        if ($template_name == "") {
+            $template_name = "campaign";
+        }
+
+        if ($language == "") {
+            $template_name = "en_US";
+        }
+
+        $message = [
+
+            "messaging_product" => "whatsapp",
+            "recipient_type" => "individual",
+            "to" => $to,
+            "type" => "template",
+            "template" => [
+                "name" => $template_name,
+                "language"=> [
+                    "code"=> $language,
+                    "policy"=> "deterministic"
+                ],
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => $parameters
+                        
+                    ],
+                    [
+                        "type"=>"button",
+                        "sub_type"=>"quick_reply",
+                        "index"=>0,
+                        "parameters"=>[
+                            [
+                                "type"=>"payload",
+                                "payload"=>"chat us"
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+
+
+        ];
+
+
+        return json_encode($message);
+    }
+
+
     
 
   

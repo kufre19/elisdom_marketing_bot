@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\WaUser;
+use App\Traits\HandleTemplateMessage;
+use App\Traits\MessagesType;
+use App\Traits\SendMessage;
 use Illuminate\Http\Request;
 use Orchid\Support\Facades\Alert;
 use Orchid\Support\Facades\Toast;
@@ -10,6 +13,7 @@ use Orchid\Support\Facades\Toast;
 
 class WaUserController extends Controller
 {
+    use SendMessage, MessagesType, HandleTemplateMessage;
     protected $model = WaUser::class;
     /**
      * Display a listing of the resource.
@@ -114,5 +118,56 @@ class WaUserController extends Controller
         Toast::error('Customer contact deleted!');
 
         return redirect()->to('wa-users/list');
+    }
+
+    public function send_campaign(Request $request)
+    {
+
+        $language = $request->input("language");
+        $validity_date = $request->input("validity_date");
+        $number_of_products = $request->input("number_of_products");
+        // $products = explode("\r\n",$request->input("products"));
+        $test = <<<MSG
+        some test here
+
+        no herere
+        MSG;
+        // $test .= "\ntetsgh";
+        // dd($test);
+        // for ($i=0; $i < count($products) ; $i++) { 
+           
+        // }
+        $products = str_replace("\r\n","",$request->input("products"));
+        // dd($products);
+        // $products =<<<MSG
+        // {$products}
+        // MSG;
+        // var_dump($products);
+
+        $parameters = [
+            [
+                "type"=>"text",
+                "text"=>$number_of_products
+            ],
+            [
+                "type"=>"text",
+                "text"=>$products
+            ],
+            [
+                "type"=>"text",
+                "text"=>$validity_date
+            ],
+        ];
+        $user_model = new WaUser();
+        $users = $user_model->get();
+        
+        foreach ($users as $key => $user) {
+            $template_message = $this->make_interactive_template_message($parameters,$user->phone,"campaign",$language);
+            $this->send_post_curl($template_message);
+        } 
+
+        
+
+
     }
 }
