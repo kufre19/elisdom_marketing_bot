@@ -18,6 +18,11 @@ trait MessagesType {
    
 
   
+    /**
+     * create json formated free form message for whatsapp
+     * 
+     * 
+     */
 
     public function make_text_message($text,$to="",$preview_url=false)
     {

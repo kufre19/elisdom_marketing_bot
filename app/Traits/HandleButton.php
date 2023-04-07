@@ -8,12 +8,11 @@ use Illuminate\Support\Facades\Config;
 
 trait HandleButton
 {
-    use SendMessage;
+    use SendMessage, HandleLiveChat;
 
     public function button_index()
     {
-        echo "here";
-        die;
+        
         if ($this->button_id == "chat us") {
             return $this->index_live_chat();
         }

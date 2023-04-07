@@ -29,15 +29,19 @@ class ChatRequestController extends Controller
     public function update_chat_request(Request $request, $id)
     {
         $chat_request = ChatRequest::find($id);
+        $session_model = new Session();
+
         if ($chat_request) {
             if ($request->input('action') === 'accept') {
                 $chat_request->assigned_to = auth()->id();
                 $chat_request->ongoing = true;
-                $session_model = new Session();
                 // update chat session to let bot know who to send message to
                 $session_model->where('whatsapp_id', $request->input("customer_id"))->update(['chatting_with' => auth()->id()]);
+                $this->auto_admin_greet_message(auth()->id(),$request->input("customer_id"));
             } elseif ($request->input('action') === 'end') {
                 $chat_request->ongoing = 2;
+                  // update chat session to let bot know who to send message to
+                  $session_model->where('whatsapp_id', $request->input("customer_id"))->update(['chatting_with' => 0,"live_chat"=>0]);
             }
             $chat_request->save();
             return redirect()->back()->with('success', 'Chat request updated successfully!');

@@ -18,6 +18,7 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="action" value="end">
+                                    <input type="hidden" name="customer_id" value="{{$request->customer_id}}">
                               
                                     <button type="submit" class="btn btn-danger btn-sm">End Chat</button>
                                 </form>

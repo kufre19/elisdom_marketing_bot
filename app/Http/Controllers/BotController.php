@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\WaUser;
 use App\Traits\GeneralFunctions;
 use App\Traits\HandleButton;
 use App\Traits\HandleCart;
@@ -14,6 +15,7 @@ use App\Traits\MessagesType;
 use App\Traits\SendMessage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BotController extends Controller
 {
@@ -40,12 +42,14 @@ class BotController extends Controller
 
     public function __construct(Request $request)
     {
-        //   $data = json_encode($request->all());
-        //     $file = time() .rand(). '_file.json';
-        //     $destinationPath=public_path()."/upload/";
-        //     if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
-        //     File::put($destinationPath.$file,$data);
-        //     die;
+        // $data = $request->all();
+        // $file = time() . '_' . rand() . '.json';
+        // $destinationPath = 'upload/';
+        
+        // Storage::put($destinationPath . $file, json_encode($data));
+        
+        // exit();
+        
        
         if(!isset($request['hub_verify_token'])){
     
@@ -79,6 +83,7 @@ class BotController extends Controller
                         break;
     
                     case 'button_reply':
+                       
                         $this->button_id = $request['entry'][0]['changes'][0]["value"]['messages'][0]['interactive']['button_reply']['id'];
                         $this->message_type = "button";
     
@@ -109,16 +114,16 @@ class BotController extends Controller
             return $this->verify_bot($request);
         }
         
-
-        $this->fetch_user();
+    
+        $this->fetch_user_session();
+        // $this->fetch_user();
         switch ($this->message_type) {
             case 'text':
                 $this->text_index();
                 break;
 
             case 'button':
-                echo "here";
-                die;
+               
                 $this->button_index();
                 break;
 
@@ -152,7 +157,7 @@ class BotController extends Controller
 
     public function fetch_user()
     {
-        $model = new User();
+        $model = new WaUser();
         $fetch = $model->where('whatsapp_id',$this->userphone)->first();
         if(!$fetch)
         {
@@ -169,7 +174,7 @@ class BotController extends Controller
     {
         $model = new User();
         $model->name = $this->username;
-        $model->whatsapp_id = $this->userphone;
+        $model->phone = $this->userphone;
         $model->save();
         $this->start_new_session();
         $this->send_greetings_message();

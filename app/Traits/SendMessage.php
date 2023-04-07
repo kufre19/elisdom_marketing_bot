@@ -87,7 +87,7 @@ trait SendMessage
         ));
 
         $response = curl_exec($curl);
-        echo $response;
+        // echo $response;
 
         // curl_close($curl);
 
@@ -120,7 +120,7 @@ trait SendMessage
 
         $response = curl_exec($curl);
         $response = json_decode($response, true);
-        echo curl_error($curl);
+        // echo curl_error($curl);
         return $response;
     }
 
