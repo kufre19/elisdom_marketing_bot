@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\FaqsModel;
+
 use Illuminate\Support\Facades\Config;
 
 trait HandleButton
@@ -11,7 +12,12 @@ trait HandleButton
 
     public function button_index()
     {
-       
+        echo "here";
+        die;
+        if ($this->button_id == "chat us") {
+            return $this->index_live_chat();
+        }
+      
     }
 
 

@@ -3,12 +3,12 @@
 namespace App\Traits;
 
 use App\Models\User;
-use HandleLiveChat;
+
 use Illuminate\Support\Facades\Config;
 
 trait HandleText
 {
-    use HandleButton, SendMessage,CreateActionsSession,HandleLiveChat;
+    use HandleButton, SendMessage,CreateActionsSession;
 
     public $text_intent;
 

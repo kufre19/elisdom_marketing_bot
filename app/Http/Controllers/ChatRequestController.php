@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChatRequest;
+use App\Models\Session;
+use App\Traits\HandleLiveChat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class ChatRequestController extends Controller
 {
+    use HandleLiveChat;
     //
     public function index()
     {
@@ -29,6 +33,9 @@ class ChatRequestController extends Controller
             if ($request->input('action') === 'accept') {
                 $chat_request->assigned_to = auth()->id();
                 $chat_request->ongoing = true;
+                $session_model = new Session();
+                // update chat session to let bot know who to send message to
+                $session_model->where('whatsapp_id', $request->input("customer_id"))->update(['chatting_with' => auth()->id()]);
             } elseif ($request->input('action') === 'end') {
                 $chat_request->ongoing = 2;
             }

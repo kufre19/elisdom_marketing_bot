@@ -99,7 +99,7 @@ class MessagesController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function Botsend(Request $request)
+    public function Botsend( $request)
     {
         // default variables
         $error = (object)[
@@ -108,48 +108,48 @@ class MessagesController extends Controller
         ];
         $attachment = null;
         $attachment_title = null;
+        $sender_id = $request['sender_id'];
+        $recipient_id = $request['recipient_id'];
+
 
         // if there is attachment [file]
-        if ($request->hasFile('file')) {
-            // allowed extensions
-            $allowed_images = Chatify::getAllowedImages();
-            $allowed_files  = Chatify::getAllowedFiles();
-            $allowed        = array_merge($allowed_images, $allowed_files);
+        // if ($request->hasFile('file')) {
+        //     // allowed extensions
+        //     $allowed_images = Chatify::getAllowedImages();
+        //     $allowed_files  = Chatify::getAllowedFiles();
+        //     $allowed        = array_merge($allowed_images, $allowed_files);
 
-            $file = $request->file('file');
-            // check file size
-            if ($file->getSize() < Chatify::getMaxUploadSize()) {
-                if (in_array(strtolower($file->extension()), $allowed)) {
-                    // get attachment name
-                    $attachment_title = $file->getClientOriginalName();
-                    // upload attachment and store the new name
-                    $attachment = Str::uuid() . "." . $file->extension();
-                    $file->storeAs(config('chatify.attachments.folder'), $attachment, config('chatify.storage_disk_name'));
-                } else {
-                    $error->status = 1;
-                    $error->message = "File extension not allowed!";
-                }
-            } else {
-                $error->status = 1;
-                $error->message = "File size you are trying to upload is too large!";
-            }
-        }
+        //     $file = $request->file('file');
+        //     // check file size
+        //     if ($file->getSize() < Chatify::getMaxUploadSize()) {
+        //         if (in_array(strtolower($file->extension()), $allowed)) {
+        //             // get attachment name
+        //             $attachment_title = $file->getClientOriginalName();
+        //             // upload attachment and store the new name
+        //             $attachment = Str::uuid() . "." . $file->extension();
+        //             $file->storeAs(config('chatify.attachments.folder'), $attachment, config('chatify.storage_disk_name'));
+        //         } else {
+        //             $error->status = 1;
+        //             $error->message = "File extension not allowed!";
+        //         }
+        //     } else {
+        //         $error->status = 1;
+        //         $error->message = "File size you are trying to upload is too large!";
+        //     }
+        // }
 
         if (!$error->status) {
             $message = Chatify::newMessage([
-                'from_id' => Auth::user()->id,
-                'to_id' => $request['id'],
+                'from_id' => $sender_id,
+                'to_id' => $recipient_id,
                 'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
-                'attachment' => ($attachment) ? json_encode((object)[
-                    'new_name' => $attachment,
-                    'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
-                ]) : null,
+                'attachment' =>  null,
             ]);
             $messageData = Chatify::parseMessage($message);
             if (Auth::user()->id != $request['id']) {
-                Chatify::push("private-chatify." . $request['id'], 'messaging', [
-                    'from_id' => Auth::user()->id,
-                    'to_id' => $request['id'],
+                Chatify::push("private-chatify." . $recipient_id, 'messaging', [
+                    'from_id' => $sender_id,
+                    'to_id' => $recipient_id,
                     'message' => Chatify::messageCard($messageData, true)
                 ]);
             }

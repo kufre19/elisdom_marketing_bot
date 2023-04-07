@@ -108,6 +108,7 @@ class BotController extends Controller
         {
             return $this->verify_bot($request);
         }
+        
 
         $this->fetch_user();
         switch ($this->message_type) {
@@ -116,7 +117,8 @@ class BotController extends Controller
                 break;
 
             case 'button':
-
+                echo "here";
+                die;
                 $this->button_index();
                 break;
 

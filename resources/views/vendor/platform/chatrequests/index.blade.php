@@ -18,6 +18,7 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="action" value="end">
+                              
                                     <button type="submit" class="btn btn-danger btn-sm">End Chat</button>
                                 </form>
                             </li>
@@ -40,6 +41,8 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="action" value="accept">
+                                    <input type="hidden" name="customer_id" value="{{$request->customer_id}}">
+                                    {{-- <input type="hidden" name="customer_reps_id" value="{{Auth::user()->id}}"> --}}
                                     <button type="submit" class="btn btn-primary btn-sm">Accept Chat</button>
                                 </form>
                             </li>
