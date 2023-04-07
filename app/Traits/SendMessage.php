@@ -87,7 +87,7 @@ trait SendMessage
         ));
 
         $response = curl_exec($curl);
-        // echo $response;
+        return $response;
 
         // curl_close($curl);
 
