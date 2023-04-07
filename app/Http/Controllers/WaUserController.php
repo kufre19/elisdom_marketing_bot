@@ -163,8 +163,10 @@ class WaUserController extends Controller
         
         foreach ($users as $key => $user) {
             $template_message = $this->make_interactive_template_message($parameters,$user->phone,"campaign",$language);
-            $this->send_post_curl($template_message);
+            print_r($this->send_post_curl($template_message));
         } 
+
+
 
         
 
