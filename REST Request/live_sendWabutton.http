@@ -1,4 +1,4 @@
 GET https://marketing.ishpejti.al/api/bot
 Content-Type: application/json
 
-{"object":"whatsapp_business_account","entry":[{"id":"100294836365689","changes":[{"value":{"messaging_product":"whatsapp","metadata":{"display_phone_number":"355696755067","phone_number_id":"113312888381594"},"statuses":[{"id":"wamid.HBgNMjM0NzAxNjc5MTUxMhUCABEYEkQ0NzA4NDFCOTFGRjRFMjBBRAA=","status":"read","timestamp":"1680968271","recipient_id":"2347016791512"}]},"field":"messages"}]}]}
+{"object":"whatsapp_business_account","entry":[{"id":"100294836365689","changes":[{"value":{"messaging_product":"whatsapp","metadata":{"display_phone_number":"355696755067","phone_number_id":"113312888381594"},"contacts":[{"profile":{"name":"Maxwell"},"wa_id":"2347016791512"}],"messages":[{"context":{"from":"355696755067","id":"wamid.HBgNMjM0NzAxNjc5MTUxMhUCABEYEkQzRjVCRTY0OTFGRDEzOTRDRQA="},"from":"2347016791512","id":"wamid.HBgNMjM0NzAxNjc5MTUxMhUCABIYIDZFQUQxM0U0MTk1RjA1QjFENzg3MjBBMDIyRDgyMTY2AA==","timestamp":"1680971905","type":"button","button":{"payload":"chat us","text":"Chat Us"}}]},"field":"messages"}]}]}

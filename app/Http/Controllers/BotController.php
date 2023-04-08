@@ -32,6 +32,7 @@ class BotController extends Controller
     public $user_session_data;
     public $user_session_status;
     public $wa_image_id;
+    public $button_payload;
   
     /* 
     @$menu_item_id holds the id sent back from selecting an item from whatsapp
@@ -42,11 +43,11 @@ class BotController extends Controller
 
     public function __construct(Request $request)
     {
-        $data = $request->all();
-        $file = time() . '_' . rand() . '.json';
-        $destinationPath = 'upload/';
+        // $data = $request->all();
+        // $file = time() . '_' . rand() . '.json';
+        // $destinationPath = 'upload/';
         
-        Storage::put($destinationPath . $file, json_encode($data));
+        // Storage::put($destinationPath . $file, json_encode($data));
         
         // exit();
 
@@ -86,6 +87,15 @@ class BotController extends Controller
                 $this->message_type = "image";
             
             }
+
+            if(isset($request['entry'][0]['changes'][0]["value"]['messages'][0]['button']))
+            {
+                $this->button_payload = $request['entry'][0]['changes'][0]["value"]['messages'][0]['button']['payload'];
+                $this->message_type = "button_payload";
+            
+            }
+
+
             
     
             if(isset($request['entry'][0]['changes'][0]["value"]['messages'][0]['interactive']))
@@ -158,6 +168,11 @@ class BotController extends Controller
                 break;
             case 'image':
                 $this->image_index();
+                break;
+
+            case "button_payload":
+                $this->button_id = $this->button_payload;
+                $this->button_index();
                 break;
             
             default:
