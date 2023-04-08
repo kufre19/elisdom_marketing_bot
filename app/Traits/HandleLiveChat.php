@@ -73,4 +73,14 @@ trait HandleLiveChat {
 
     }
 
+    public function send_message_to_admin()
+    {
+
+    }
+
+    public function send_message_to_user()
+    {
+        
+    }
+
 }

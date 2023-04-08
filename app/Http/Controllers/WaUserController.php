@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendCampaign;
 use App\Models\WaUser;
 use App\Traits\HandleTemplateMessage;
 use App\Traits\MessagesType;
@@ -66,7 +67,7 @@ class WaUserController extends Controller
         $waUser->phone = $validatedData['whatsapp_number'];
         $waUser->save();
     
-        return redirect()->route('wa-user.index');
+        return redirect()->to('wa-user');
     }
     
 
@@ -122,54 +123,15 @@ class WaUserController extends Controller
 
     public function send_campaign(Request $request)
     {
-
         $language = $request->input("language");
         $validity_date = $request->input("validity_date");
         $number_of_products = $request->input("number_of_products");
-        // $products = explode("\r\n",$request->input("products"));
-        $test = <<<MSG
-        some test here
-
-        no herere
-        MSG;
-        // $test .= "\ntetsgh";
-        // dd($test);
-        // for ($i=0; $i < count($products) ; $i++) { 
-           
-        // }
         $products = str_replace("\r\n","",$request->input("products"));
-        // dd($products);
-        // $products =<<<MSG
-        // {$products}
-        // MSG;
-        // var_dump($products);
-
-        $parameters = [
-            [
-                "type"=>"text",
-                "text"=>$number_of_products
-            ],
-            [
-                "type"=>"text",
-                "text"=>$products
-            ],
-            [
-                "type"=>"text",
-                "text"=>$validity_date
-            ],
-        ];
-        $user_model = new WaUser();
-        $users = $user_model->get();
-        
-        foreach ($users as $key => $user) {
-            $template_message = $this->make_interactive_template_message($parameters,$user->phone,"campaign",$language);
-            print_r($this->send_post_curl($template_message));
-        } 
-
-
-
-        
-
-
+    
+        $job = new SendCampaign($language, $validity_date, $number_of_products, $products);
+        dispatch($job);
+        Toast::info("Campaign sent to queue for processing.");
+        return redirect()->back();
     }
+    
 }

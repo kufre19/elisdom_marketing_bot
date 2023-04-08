@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Models\ChMessage as Message;
 use App\Models\ChFavorite as Favorite;
 use App\Models\WaUser;
+use App\Traits\MessagesType;
+use App\Traits\SendMessage;
 use Chatify\Facades\ChatifyMessenger as Chatify;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +20,7 @@ use Illuminate\Support\Str;
 
 class MessagesController extends Controller
 {
+    use SendMessage,MessagesType;
     protected $perPage = 30;
 
     /**
@@ -218,11 +221,10 @@ class MessagesController extends Controller
             ]);
             $messageData = Chatify::parseMessage($message);
             if (Auth::user()->id != $request['id']) {
-                Chatify::push("private-chatify." . $request['id'], 'messaging', [
-                    'from_id' => Auth::user()->id,
-                    'to_id' => $request['id'],
-                    'message' => Chatify::messageCard($messageData, true)
-                ]);
+                $user_model = new WaUser();
+                $user = $user_model->where("id",$request['id'])->first();
+                $message = $this->make_text_message($request['message'],$user->phone);
+                $wa_send_response = $this->send_post_curl($message);
             }
         }
 
