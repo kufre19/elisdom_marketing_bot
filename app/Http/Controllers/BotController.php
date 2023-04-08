@@ -60,7 +60,7 @@ class BotController extends Controller
        
         if(!isset($request['hub_verify_token'])){
     
-            $this->username =$request['entry'][0]['changes'][0]["value"]['contacts'][0]['profile']['name'] ?? "there";
+            $this->username =$request['entry'][0]['changes'][0]["value"]['contacts'][0]['profile']['name'] ?? "Dear User";
             $this->userphone =$request['entry'][0]['changes'][0]["value"]['contacts'][0]['wa_id'];
 
             if(isset($request['entry'][0]['changes'][0]["value"]['messages'][0]['text']))
