@@ -54,7 +54,9 @@ class BotController extends Controller
         if(isset($request['entry'][0]['changes'][0]["value"]['messages'][0]['pricing'])
            || isset($request['entry'][0]['changes'][0]["value"]['messages'][0]['bill']))
         {
-            exit(); // Ignore pricing/bill data and exit the method
+             return $this->message_type = "billing";
+
+             // Ignore pricing/bill data and exit the method
         }
         
        
@@ -119,6 +121,11 @@ class BotController extends Controller
         if(isset($request['hub_verify_token']))
         {
             return $this->verify_bot($request);
+        }
+
+        if($this->message_type == "billing")
+        {
+            exit();
         }
         
     
