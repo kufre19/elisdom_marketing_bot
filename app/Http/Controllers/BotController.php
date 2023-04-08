@@ -125,7 +125,7 @@ class BotController extends Controller
 
         if($this->message_type == "billing")
         {
-            exit();
+            exit(200);
         }
         
     
