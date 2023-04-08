@@ -42,13 +42,20 @@ class BotController extends Controller
 
     public function __construct(Request $request)
     {
-        $data = $request->all();
-        $file = time() . '_' . rand() . '.json';
-        $destinationPath = 'upload/';
+        // $data = $request->all();
+        // $file = time() . '_' . rand() . '.json';
+        // $destinationPath = 'upload/';
         
-        Storage::put($destinationPath . $file, json_encode($data));
+        // Storage::put($destinationPath . $file, json_encode($data));
         
-        exit();
+        // exit();
+
+        // Check if the incoming message is related to pricing/bill data
+        if(isset($request['entry'][0]['changes'][0]["value"]['messages'][0]['pricing'])
+           || isset($request['entry'][0]['changes'][0]["value"]['messages'][0]['bill']))
+        {
+            exit(); // Ignore pricing/bill data and exit the method
+        }
         
        
         if(!isset($request['hub_verify_token'])){
