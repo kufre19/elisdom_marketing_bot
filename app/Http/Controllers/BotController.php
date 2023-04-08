@@ -58,6 +58,13 @@ class BotController extends Controller
 
              // Ignore pricing/bill data and exit the method
         }
+
+        if(isset($request['entry'][0]['changes'][0]["value"]['statuses']))
+        {
+             return $this->message_type = "message_status";
+
+             // Ignore pricing/bill data and exit the method
+        }
         
        
         if(!isset($request['hub_verify_token'])){
@@ -124,6 +131,11 @@ class BotController extends Controller
         }
 
         if($this->message_type == "billing")
+        {
+            exit(200);
+        }
+
+        if($this->message_type == "message_status")
         {
             exit(200);
         }
