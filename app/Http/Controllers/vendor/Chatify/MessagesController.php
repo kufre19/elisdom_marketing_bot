@@ -15,6 +15,7 @@ use App\Traits\SendMessage;
 use Chatify\Facades\ChatifyMessenger as Chatify;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Str;
 
@@ -104,6 +105,7 @@ class MessagesController extends Controller
      */
     public function Botsend( $request)
     {
+       Log::error("here");
         // default variables
         $error = (object)[
             'status' => 0,

@@ -14,8 +14,10 @@ trait HandleText
 
     public function text_index()
     {
+       
         $this->find_text_intent();
         if ($this->text_intent == "live_chat") {
+           
             return $this->index_live_chat();
         }
         if ($this->text_intent == "greetings") {

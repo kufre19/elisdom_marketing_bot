@@ -38,6 +38,11 @@ Route::get('/', function () {
     return redirect()->to("admin");
 });
 
+Route::get("test", function(){
+    dd( route("bot.send.message"));
+
+});
+
 /* 
 |------------------------------------------------------------------------
 |CUSTOM URL AND CONTOLLERS HERE
