@@ -63,6 +63,11 @@ trait HandleLiveChat
 
     public function continue_chat_session($message, $phone, $chatting_with)
     {
+        if($message == "" || $message == " ")
+        {
+            http_response_code(200);
+            exit();
+        }
 
         $user_model = new WaUser();
         $user = $user_model->where("phone", $phone)->first();
