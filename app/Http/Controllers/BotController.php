@@ -120,10 +120,12 @@ class BotController extends Controller
     public function index(Request $request)
     {
         if (isset($request['hub_verify_token'])) {
+            return response("ok",200);
             return $this->verify_bot($request);
         }
 
         if ($this->message_type == "billing") {
+            return response("ok",200);
             exit(200);
         }
 

@@ -66,6 +66,7 @@ trait SendMessage
 
     public function send_post_curl($post_data)
     {
+
         $token = env("WB_TOKEN");
         $url = env("WB_MESSAGE_URL");
 
@@ -89,6 +90,7 @@ trait SendMessage
         $response = curl_exec($curl);
         $response = json_decode($response, true);
         // echo curl_error($curl);
+        http_response_code(200);
         return $response;
 
         // curl_close($curl);

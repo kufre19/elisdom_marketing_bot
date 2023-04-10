@@ -16,7 +16,7 @@ trait HandleLiveChat
     //    if chat turned on and text is sent to this index then send the text to chat app to pass to chatify and pusher**
     // i want you to take the text from the chat app and send it to chatify and pusher**
     // next when chat request is created i want you to later on write notification to tell admin about new message 
-    // then when request is accepted need for you to send a hello message with admin name before a message is continued
+    // then when request is accepted need for you to send a hello message with admin name before a message is continued**
 
     /**
      *  not complete 

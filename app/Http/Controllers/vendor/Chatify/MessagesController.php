@@ -226,7 +226,8 @@ class MessagesController extends Controller
                 $user_model = new WaUser();
                 $user = $user_model->where("id",$request['id'])->first();
                 $message = $this->make_text_message($request['message'],$user->phone);
-                $wa_send_response = $this->send_post_curl($message);
+                $wa_send_response = info( $this->send_post_curl($message));
+             
             }
         }
 
