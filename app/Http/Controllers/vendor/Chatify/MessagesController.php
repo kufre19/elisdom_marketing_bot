@@ -313,10 +313,10 @@ class MessagesController extends Controller
             ->where('wa_users.id', '!=', Auth::user()->id)
             ->select('wa_users.*', DB::raw('MAX(ch_messages.created_at) max_created_at'))
             ->orderBy('max_created_at', 'desc')
-            ->groupBy('wa_users.id', 'wa_users.phone') // Add wa_users.phone to the groupBy() method
+            ->groupBy('wa_users.id', 'wa_users.phone', 'wa_users.name')
             ->paginate($request->per_page ?? $this->perPage);
     
-        $usersList = $users->items();
+    $usersList = $users->items();
     
         if (count($usersList) > 0) {
             $contacts = '';
