@@ -313,7 +313,7 @@ class MessagesController extends Controller
             ->where('wa_users.id', '!=', Auth::user()->id)
             ->select('wa_users.*', DB::raw('MAX(ch_messages.created_at) max_created_at'))
             ->orderBy('max_created_at', 'desc')
-            ->groupBy('wa_users.id', 'wa_users.phone', 'wa_users.name',"created_at","updated_at")
+            ->groupBy('wa_users.id', 'wa_users.phone', 'wa_users.name',"wa_users.created_at","wa_users.updated_at")
             ->paginate($request->per_page ?? $this->perPage);
     
     $usersList = $users->items();
@@ -334,6 +334,11 @@ class MessagesController extends Controller
         ], 200);
     }
 
+    // gidiid 
+
+
+
+    
     /**
      * Update user's list item data
      *
