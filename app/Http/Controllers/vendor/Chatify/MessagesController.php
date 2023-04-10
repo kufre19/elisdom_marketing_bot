@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Str;
+use App\Http\Controllers\vendor\Chatify\ChatifyMessengerModified as ChatifyModified;
 
 class MessagesController extends Controller
 {
@@ -150,7 +151,7 @@ class MessagesController extends Controller
                 'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
                 'attachment' =>  null,
             ]);
-            $messageData = Chatify::parseMessage($message);
+            $messageData = ChatifyModified::parseMessage($recipient_id,$message);
             info($messageData);
 
             if (Auth::user()->id != $request['id']) {
@@ -166,7 +167,7 @@ class MessagesController extends Controller
         return Response::json([
             'status' => '200',
             'error' => $error,
-            
+
             'message' => Chatify::messageCard(@$messageData),
             'tempID' => $request['temporaryMsgId'],
         ]);
