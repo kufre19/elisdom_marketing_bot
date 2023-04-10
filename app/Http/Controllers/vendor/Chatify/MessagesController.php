@@ -151,12 +151,14 @@ class MessagesController extends Controller
                 'attachment' =>  null,
             ]);
             $messageData = Chatify::parseMessage($message);
+            info($messageData);
+
             if (Auth::user()->id != $request['id']) {
-                Chatify::push("private-chatify." . $recipient_id, 'messaging', [
-                    'from_id' => $sender_id,
-                    'to_id' => $recipient_id,
-                    'message' => Chatify::messageCard($messageData, true)
-                ]);
+              info(  Chatify::push("private-chatify." . $recipient_id, 'messaging', [
+                'from_id' => $sender_id,
+                'to_id' => $recipient_id,
+                'message' => Chatify::messageCard($messageData, true)
+              ]));
             }
         }
 
