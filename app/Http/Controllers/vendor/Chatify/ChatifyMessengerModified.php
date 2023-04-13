@@ -16,7 +16,7 @@ class ChatifyMessengerModified extends Chatify  {
      * @param int $id
      * @return array
      */
-    public function parseMessagemodified($sender = null, $prefetchedMessage = null, $id = null)
+    public static function parseMessagemodified($sender = null, $prefetchedMessage = null, $id = null)
     {
         $msg = null;
         $attachment = null;

@@ -151,7 +151,7 @@ class MessagesController extends Controller
                 'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
                 'attachment' =>  null,
             ]);
-            $messageData = ChatifyModified::parseMessage($recipient_id,$message);
+            $messageData = ChatifyModified::parseMessagemodified($recipient_id,$message);
             info($messageData);
 
             if (Auth::user()->id != $request['id']) {
