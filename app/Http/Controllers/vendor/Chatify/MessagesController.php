@@ -216,8 +216,7 @@ class MessagesController extends Controller
         if (!$error->status) {
             $user_model = new WaUser();
             $user = $user_model->where("id", $request['id'])->first();
-            if(!$this->is_live_chat_on($user->phone))
-            {
+            if (!$this->is_live_chat_on($user->phone)) {
                 $message = Chatify::newMessage([
                     'from_id' => Auth::user()->id,
                     'to_id' => $request['id'],
@@ -228,7 +227,7 @@ class MessagesController extends Controller
                     ]) : null,
                 ]);
                 $messageData = Chatify::parseMessage($message);
-            }else{
+            } else {
                 $message = Chatify::newMessage([
                     'from_id' => Auth::user()->id,
                     'to_id' => $request['id'],
@@ -240,31 +239,20 @@ class MessagesController extends Controller
                 ]);
                 $messageData = Chatify::parseMessage($message);
                 if (Auth::user()->id != $request['id']) {
-                   
+
                     $wa_send_response = $this->send_message_to_user($request['message'], $user->phone);
                 }
             }
-          
         }
 
-        if ($wa_send_response == false) {
-           
-            // send the response
+
+        // send the response
         return Response::json([
             'status' => '200',
             'error' => $error,
             'message' => Chatify::messageCard(@$messageData),
             'tempID' => $request['temporaryMsgId'],
         ]);
-        } else {
-            // send the response
-            return Response::json([
-                'status' => '200',
-                'error' => $error,
-                'message' => Chatify::messageCard(@$messageData),
-                'tempID' => $request['temporaryMsgId'],
-            ]);
-        }
     }
 
     /**
