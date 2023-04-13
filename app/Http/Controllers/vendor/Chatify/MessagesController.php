@@ -154,7 +154,7 @@ class MessagesController extends Controller
             $messageData = ChatifyModified::parseMessagemodified($recipient_id,$message);
             info($messageData);
 
-            if (Auth::user()->id != $request['id']) {
+            if ($recipient_id != $sender_id) {
               info(  Chatify::push("private-chatify." . $recipient_id, 'messaging', [
                 'from_id' => $sender_id,
                 'to_id' => $recipient_id,
