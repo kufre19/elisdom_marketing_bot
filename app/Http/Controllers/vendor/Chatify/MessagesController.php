@@ -106,7 +106,7 @@ class MessagesController extends Controller
      */
     public function Botsend( $request)
     {
-       Log::error("here");
+    //    Log::error("here");
         // default variables
         $error = (object)[
             'status' => 0,
