@@ -25,6 +25,9 @@ trait HandleText
         }
         if ($this->text_intent == "run_action_steps") {
             $this->continue_session_step();
+        }else{
+            http_response_code(200);
+            die;
         }
         
     }
