@@ -214,34 +214,41 @@ class MessagesController extends Controller
         }
 
         if (!$error->status) {
-            $message = Chatify::newMessage([
-                'from_id' => Auth::user()->id,
-                'to_id' => $request['id'],
-                'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
-                'attachment' => ($attachment) ? json_encode((object)[
-                    'new_name' => $attachment,
-                    'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
-                ]) : null,
-            ]);
-            $messageData = Chatify::parseMessage($message);
-            if (Auth::user()->id != $request['id']) {
-                $user_model = new WaUser();
-                $user = $user_model->where("id", $request['id'])->first();
-                $wa_send_response = $this->send_message_to_user($request['message'], $user->phone);
+            $user_model = new WaUser();
+            $user = $user_model->where("id", $request['id'])->first();
+            if(!$this->is_live_chat_on($user->phone))
+            {
+                $message = Chatify::newMessage([
+                    'from_id' => Auth::user()->id,
+                    'to_id' => $request['id'],
+                    'body' => htmlentities(trim("you can not message this customer your session was ended!"), ENT_QUOTES, 'UTF-8'),
+                    'attachment' => ($attachment) ? json_encode((object)[
+                        'new_name' => $attachment,
+                        'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
+                    ]) : null,
+                ]);
+                $messageData = Chatify::parseMessage($message);
+            }else{
+                $message = Chatify::newMessage([
+                    'from_id' => Auth::user()->id,
+                    'to_id' => $request['id'],
+                    'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
+                    'attachment' => ($attachment) ? json_encode((object)[
+                        'new_name' => $attachment,
+                        'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
+                    ]) : null,
+                ]);
+                $messageData = Chatify::parseMessage($message);
+                if (Auth::user()->id != $request['id']) {
+                   
+                    $wa_send_response = $this->send_message_to_user($request['message'], $user->phone);
+                }
             }
+          
         }
 
         if ($wa_send_response == false) {
-            $message = Chatify::newMessage([
-                'from_id' => Auth::user()->id,
-                'to_id' => $request['id'],
-                'body' => htmlentities(trim("you can not message this customer your session was ended!"), ENT_QUOTES, 'UTF-8'),
-                'attachment' => ($attachment) ? json_encode((object)[
-                    'new_name' => $attachment,
-                    'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
-                ]) : null,
-            ]);
-            $messageData = Chatify::parseMessage($message);
+           
             // send the response
         return Response::json([
             'status' => '200',
