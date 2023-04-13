@@ -167,9 +167,6 @@ class MessagesController extends Controller
         return Response::json([
             'status' => '200',
             'error' => $error,
-
-            'message' => Chatify::messageCard(@$messageData),
-            'tempID' => $request['temporaryMsgId'],
         ]);
     }
 
