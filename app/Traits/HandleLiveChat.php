@@ -113,7 +113,18 @@ trait HandleLiveChat
     {
     }
 
-    public function send_message_to_user()
+    public function send_message_to_user($message,$phone)
     {
+
+        $session_model = new Session();
+        $session = $session_model->where('whatsapp_id', '=', $this->userphone)->first();
+        if($session->live_chat == 1)
+        {
+            $message = $this->make_text_message($message,$phone);
+            $this->send_post_curl($message);
+        }else{
+            return false;
+        }
+      
     }
 }

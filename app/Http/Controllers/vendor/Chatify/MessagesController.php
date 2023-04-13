@@ -19,10 +19,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Str;
 use App\Http\Controllers\vendor\Chatify\ChatifyMessengerModified as ChatifyModified;
+use App\Traits\HandleLiveChat;
 
 class MessagesController extends Controller
 {
-    use SendMessage,MessagesType;
+    use SendMessage, MessagesType, HandleLiveChat;
     protected $perPage = 30;
 
     /**
@@ -104,9 +105,9 @@ class MessagesController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function Botsend( $request)
+    public function Botsend($request)
     {
-    //    Log::error("here");
+        //    Log::error("here");
         // default variables
         $error = (object)[
             'status' => 0,
@@ -151,7 +152,7 @@ class MessagesController extends Controller
                 'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
                 'attachment' =>  null,
             ]);
-            $messageData = ChatifyModified::parseMessagemodified($recipient_id,$message);
+            $messageData = ChatifyModified::parseMessagemodified($recipient_id, $message);
             // info($messageData);
 
             if ($recipient_id != $sender_id) {
@@ -159,7 +160,7 @@ class MessagesController extends Controller
                     'from_id' => $sender_id,
                     'to_id' => $recipient_id,
                     'message' => Chatify::messageCard($messageData, true)
-                  ]);
+                ]);
             }
         }
 
@@ -225,20 +226,38 @@ class MessagesController extends Controller
             $messageData = Chatify::parseMessage($message);
             if (Auth::user()->id != $request['id']) {
                 $user_model = new WaUser();
-                $user = $user_model->where("id",$request['id'])->first();
-                $message = $this->make_text_message($request['message'],$user->phone);
-                $wa_send_response =$this->send_post_curl($message);
-             
+                $user = $user_model->where("id", $request['id'])->first();
+                $wa_send_response = $this->send_message_to_user($request['message'], $user->phone);
             }
         }
 
-        // send the response
+        if ($wa_send_response == false) {
+            $message = Chatify::newMessage([
+                'from_id' => Auth::user()->id,
+                'to_id' => $request['id'],
+                'body' => htmlentities(trim("you can not message this customer your session was ended!"), ENT_QUOTES, 'UTF-8'),
+                'attachment' => ($attachment) ? json_encode((object)[
+                    'new_name' => $attachment,
+                    'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
+                ]) : null,
+            ]);
+            $messageData = Chatify::parseMessage($message);
+            // send the response
         return Response::json([
             'status' => '200',
             'error' => $error,
             'message' => Chatify::messageCard(@$messageData),
             'tempID' => $request['temporaryMsgId'],
         ]);
+        } else {
+            // send the response
+            return Response::json([
+                'status' => '200',
+                'error' => $error,
+                'message' => Chatify::messageCard(@$messageData),
+                'tempID' => $request['temporaryMsgId'],
+            ]);
+        }
     }
 
     /**
@@ -314,11 +333,11 @@ class MessagesController extends Controller
             ->where('wa_users.id', '!=', Auth::user()->id)
             ->select('wa_users.*', DB::raw('MAX(ch_messages.created_at) max_created_at'))
             ->orderBy('max_created_at', 'desc')
-            ->groupBy('wa_users.id', 'wa_users.phone', 'wa_users.name',"wa_users.created_at","wa_users.updated_at")
+            ->groupBy('wa_users.id', 'wa_users.phone', 'wa_users.name', "wa_users.created_at", "wa_users.updated_at")
             ->paginate($request->per_page ?? $this->perPage);
-    
-    $usersList = $users->items();
-    
+
+        $usersList = $users->items();
+
         if (count($usersList) > 0) {
             $contacts = '';
             foreach ($usersList as $user) {
@@ -339,7 +358,7 @@ class MessagesController extends Controller
 
 
 
-    
+
     /**
      * Update user's list item data
      *
