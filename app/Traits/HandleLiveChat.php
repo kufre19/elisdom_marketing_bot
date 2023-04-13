@@ -117,7 +117,7 @@ trait HandleLiveChat
     {
 
         $session_model = new Session();
-        $session = $session_model->where('whatsapp_id', '=', $this->userphone)->first();
+        $session = $session_model->where('whatsapp_id', '=', $phone)->first();
         if($session->live_chat == 1)
         {
             $message = $this->make_text_message($message,$phone);
